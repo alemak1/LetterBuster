@@ -75,16 +75,38 @@ class LetterBoxGenerator{
         
     }
     
+  
     
-    static func GetRandomLetterExNihilo() -> SCNNode{
+    static func GetRandomLetterExNihilo(forWord word: String?) -> SCNNode{
+        
         let randomLetterStyle = LetterStyle.GetRandomLetterStyle()
-        let randomLetterType = LetterType.GetRandomLetterType()
+        
+        
+        var letterType: LetterType? = nil
+        
+        if let word = word{
+            
+            let letterTypes: [LetterType] = word.uppercased().characters.map({
+                let rawValue = "letter_".appending("\($0)")
+                return LetterType(rawValue: rawValue)!
+            })
+            
+            let idx = Int(arc4random_uniform(UInt32(letterTypes.count)))
+            let randomLetterType = letterTypes[idx]
+            
+            letterType = randomLetterType
+           
+        } else {
+            
+            letterType = LetterType.GetRandomLetterType()
+            
+        }
         
 
         
-        print("The random letter obtained is: \(randomLetterType.rawValue)")
+        print("The random letter obtained is: \(letterType!.rawValue)")
         
-        return LetterBoxGenerator.GetLetterBoxExNihilo(ofType: randomLetterType, andOfStyle: randomLetterStyle)
+        return LetterBoxGenerator.GetLetterBoxExNihilo(ofType: letterType!, andOfStyle: randomLetterStyle)
     }
     
     static func GetLetterBoxExNihilo(ofType letterType: LetterType, andOfStyle letterStyle: LetterStyle) -> SCNNode{

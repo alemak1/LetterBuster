@@ -92,12 +92,16 @@ class GameViewController: UIViewController {
     var spawnTime: TimeInterval = 3.00
     var randomTimeDist = GKRandomDistribution(lowestValue: 1, highestValue: 3)
     
-    var currentWord = "chinese".uppercased()
-    var currentLetterIndex = 0
+    var targetWord: String!
+    var tempWord: String!
+    var wordInProgress: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.targetWord = "Chinese"
+        self.wordInProgress = ""
+        self.tempWord = self.targetWord
         
         setupView()
         setupScene()
@@ -159,6 +163,7 @@ class GameViewController: UIViewController {
         
         self.scnScene.rootNode.addChildNode(hudManager.hudNode)
         hudManager.hudNode.position = SCNVector3(0.0, 10.0, 0.0)
+        hudManager.setTargetWord(targetWord: self.targetWord)
     }
     
     
@@ -185,7 +190,7 @@ class GameViewController: UIViewController {
         
         let spawnPosition = spawnPoint.getRandomPoint()
         
-        let randomLetter = LetterBoxGenerator.GetRandomLetterExNihilo()
+        let randomLetter = LetterBoxGenerator.GetRandomLetterExNihilo(forWord: self.targetWord)
         randomLetter.position = spawnPosition
         
         scnScene.rootNode.addChildNode(randomLetter)
@@ -209,7 +214,20 @@ class GameViewController: UIViewController {
     func handleTouchFor(node: SCNNode){
         
         let letter = node.name!
-        print("You shot the letter \(letter)")
+        
+        let nextLetter = "\(self.tempWord.uppercased().first!)"
+        
+        if letter == nextLetter{
+            print("Yes, you got the corret letter")
+            self.wordInProgress = self.wordInProgress.appending(letter)
+            
+            self.tempWord.removeFirst()
+            
+            hudManager.setWordInProgress(wordInProgress: self.wordInProgress)
+        } else {
+            print("Wrong letter, you lost a life")
+            hudManager.lives -= 1
+        }
         
         let explosion = createExplosionParticles()
     
