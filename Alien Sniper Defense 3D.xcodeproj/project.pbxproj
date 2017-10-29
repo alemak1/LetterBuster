@@ -14,6 +14,10 @@
 		BD4D51F81FA41FC100A9870E /* LetterBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4D51F71FA41FC100A9870E /* LetterBox.swift */; };
 		BD4D521D1FA440C000A9870E /* explosion.scnp in Resources */ = {isa = PBXBuildFile; fileRef = BD4D521B1FA440C000A9870E /* explosion.scnp */; };
 		BD4D521E1FA440C000A9870E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = BD4D521C1FA440C000A9870E /* spark.png */; };
+		BD7CFAA41FA5C7B2003BC284 /* PreambleScene.scn in Resources */ = {isa = PBXBuildFile; fileRef = BD7CFAA31FA5C7B2003BC284 /* PreambleScene.scn */; };
+		BD7CFAA81FA5D417003BC284 /* GameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7CFAA71FA5D417003BC284 /* GameHelper.swift */; };
+		BD7CFAAA1FA5E2E3003BC284 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7CFAA91FA5E2E3003BC284 /* Cloud.swift */; };
+		BD7CFAAC1FA5F1D8003BC284 /* SpawnPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7CFAAB1FA5F1D8003BC284 /* SpawnPoint.swift */; };
 		BDA110F11FA3272A00341B34 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA110F01FA3272A00341B34 /* AppDelegate.swift */; };
 		BDA110F31FA3272A00341B34 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = BDA110F21FA3272A00341B34 /* art.scnassets */; };
 		BDA110F51FA3272A00341B34 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA110F41FA3272A00341B34 /* GameViewController.swift */; };
@@ -31,6 +35,10 @@
 		BD4D51F91FA424AC00A9870E /* Background_Diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background_Diffuse.png; path = art.scnassets/Background_Diffuse.png; sourceTree = "<group>"; };
 		BD4D521B1FA440C000A9870E /* explosion.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = explosion.scnp; sourceTree = "<group>"; };
 		BD4D521C1FA440C000A9870E /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		BD7CFAA31FA5C7B2003BC284 /* PreambleScene.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = PreambleScene.scn; path = "Alien Sniper Defense 3D/art.scnassets/PreambleScene.scn"; sourceTree = "<group>"; };
+		BD7CFAA71FA5D417003BC284 /* GameHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHelper.swift; sourceTree = "<group>"; };
+		BD7CFAA91FA5E2E3003BC284 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
+		BD7CFAAB1FA5F1D8003BC284 /* SpawnPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnPoint.swift; sourceTree = "<group>"; };
 		BDA110ED1FA3272A00341B34 /* Alien Sniper Defense 3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alien Sniper Defense 3D.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA110F01FA3272A00341B34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BDA110F21FA3272A00341B34 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -52,12 +60,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BD45E6431FA46FBB008ACCD7 /* hud */ = {
+		BD45E6431FA46FBB008ACCD7 /* utility */ = {
 			isa = PBXGroup;
 			children = (
 				BD45E6441FA46FCA008ACCD7 /* HUDManager.swift */,
+				BD7CFAA71FA5D417003BC284 /* GameHelper.swift */,
 			);
-			path = hud;
+			path = utility;
 			sourceTree = "<group>";
 		};
 		BD4D521A1FA440A400A9870E /* particles */ = {
@@ -72,6 +81,9 @@
 		BDA110E41FA3272A00341B34 = {
 			isa = PBXGroup;
 			children = (
+				BD7CFAAB1FA5F1D8003BC284 /* SpawnPoint.swift */,
+				BD7CFAA91FA5E2E3003BC284 /* Cloud.swift */,
+				BD7CFAA31FA5C7B2003BC284 /* PreambleScene.scn */,
 				BDA110EF1FA3272A00341B34 /* Alien Sniper Defense 3D */,
 				BDA110EE1FA3272A00341B34 /* Products */,
 			);
@@ -88,7 +100,7 @@
 		BDA110EF1FA3272A00341B34 /* Alien Sniper Defense 3D */ = {
 			isa = PBXGroup;
 			children = (
-				BD45E6431FA46FBB008ACCD7 /* hud */,
+				BD45E6431FA46FBB008ACCD7 /* utility */,
 				BD4D521A1FA440A400A9870E /* particles */,
 				BDA110F01FA3272A00341B34 /* AppDelegate.swift */,
 				BD4D51F91FA424AC00A9870E /* Background_Diffuse.png */,
@@ -167,6 +179,7 @@
 			files = (
 				BD4D51D91FA41CAB00A9870E /* letters.scn in Resources */,
 				BDA110F31FA3272A00341B34 /* art.scnassets in Resources */,
+				BD7CFAA41FA5C7B2003BC284 /* PreambleScene.scn in Resources */,
 				BDA110FD1FA3272A00341B34 /* LaunchScreen.storyboard in Resources */,
 				BD413D331FA4569A00D880DD /* scene1.scn in Resources */,
 				BD4D521E1FA440C000A9870E /* spark.png in Resources */,
@@ -187,6 +200,9 @@
 				BDA110F11FA3272A00341B34 /* AppDelegate.swift in Sources */,
 				BD45E6471FA472F9008ACCD7 /* GameLevel.swift in Sources */,
 				BD4D51F81FA41FC100A9870E /* LetterBox.swift in Sources */,
+				BD7CFAAA1FA5E2E3003BC284 /* Cloud.swift in Sources */,
+				BD7CFAA81FA5D417003BC284 /* GameHelper.swift in Sources */,
+				BD7CFAAC1FA5F1D8003BC284 /* SpawnPoint.swift in Sources */,
 				BD45E6451FA46FCA008ACCD7 /* HUDManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

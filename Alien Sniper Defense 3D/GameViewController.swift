@@ -14,78 +14,26 @@ import GameplayKit
 class GameViewController: UIViewController {
 
     
-    enum SpawnPoint{
-        
-        case Left(SCNVector3)
-        case Right(SCNVector3)
-        case Top(SCNVector3)
-        case Bottom(SCNVector3)
-        case BehindCamera(SCNVector3)
-        
-        func getRandomPoint() -> SCNVector3{
-            
-            
-            switch self {
-            case .Left(let cameraPosition):
-                return SCNVector3(cameraPosition.x-7, -2, -5)
-            case .Right(let cameraPosition):
-                return SCNVector3(cameraPosition.x+7, -2, -10)
-            case .BehindCamera(let cameraPosition):
-                return SCNVector3(cameraPosition.x, cameraPosition.y-3, cameraPosition.z+2)
-            case .Bottom(let cameraPosition):
-                return SCNVector3(cameraPosition.x, cameraPosition.y-5.00, -10)
-            case .Top(let cameraPosition):
-                return SCNVector3(cameraPosition.x, cameraPosition.y+15.00, -10)
-            }
-            
+    var scnView: SCNView!
+    
+    var currentScene: SCNScene{
+        set(newScene){
+                scnView.scene = newScene
         }
         
-        func getImpulseParameters() -> (SCNVector3,SCNVector3){
-            let randomSrc = GKRandomSource()
-            
-            var randomDistX: GKRandomDistribution!
-            var randomDistY: GKRandomDistribution!
-            var randomDistZ: GKRandomDistribution!
-            
-            switch self {
-                /** Letters are dropped from the top of the screen, so no impulse is applied in the y or z direction **/
-            case .Top( _):
-                 randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
-                 randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
-                 randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
-            case .BehindCamera( _):
-                randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -1, highestValue: 1)
-                randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 7, highestValue: 14)
-                randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: -10, highestValue: -2)
-            case .Left( _):
-                randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: 2, highestValue: 8)
-                randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 12, highestValue: 20)
-                randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
-            case .Right( _):
-                randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -10, highestValue: -2)
-                randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 12, highestValue: 20)
-                randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
-            case .Bottom(_):
-                randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
-                randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 10, highestValue: 15)
-                randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
-                
-            }
-            
-            let randomX = randomDistX.nextInt()
-            let randomY = randomDistY.nextInt()
-            let randomZ = randomDistZ.nextInt()
-            
-            let direction = SCNVector3(randomX, randomY, randomZ)
-            let position = SCNVector3(0.05, 0.05, 0.05)
-            
-            return (direction,position)
+        get{
+            return scnView.scene!
         }
     }
     
-    var scnView: SCNView!
-    var scnScene: SCNScene!
+    var cloudSpawnPoints: [SCNVector3]?
+    
+    var preambleScene: SCNScene!
+    var gameScene: SCNScene!
+
     var cameraNode: SCNNode!
+    
+    var game = GameHelper.sharedInstance
     
     var hudManager = HUDManager.sharedInstance
     
@@ -104,13 +52,41 @@ class GameViewController: UIViewController {
         self.tempWord = self.targetWord
         
         setupView()
-        setupScene()
-        setupCamera()
+        setupInitialScene()
         
-        setupHUD()
-     
 
 
+    }
+    
+    func startGame(){
+        
+        preambleScene.isPaused = true
+        let transition = SKTransition.doorsOpenVertical(withDuration: 1.00)
+        
+        gameScene.background.contents = GameLevel.Level5.getBackgroundPath()
+        
+        scnView.present(gameScene, with: transition, incomingPointOfView: nil, completionHandler: {
+            
+            self.game.state = .playing
+            self.game.setupSounds()
+            self.gameScene.isPaused = false
+            self.setupCamera()
+            self.setupHUD()
+            self.createRandomClouds(number: 5)
+
+        })
+    }
+    
+    func startPreamble(){
+        //preambleScene.isPaused = true
+        
+        let transition = SKTransition.doorsOpenVertical(withDuration: 1.00)
+        
+        scnView.present(preambleScene, with: transition, incomingPointOfView: nil, completionHandler: {
+            
+            self.game.state = .tapToPlay
+            self.game.setupSounds()
+        })
     }
     
     func setupView(){
@@ -118,18 +94,17 @@ class GameViewController: UIViewController {
         scnView.delegate = self
         scnView.isPlaying = true
         
-        scnView.showsStatistics = true
         scnView.allowsCameraControl = false
         scnView.autoenablesDefaultLighting = true
     }
    
-    func setupScene(){
+    func setupInitialScene(){
         
-        scnScene = SCNScene()
-        scnView.scene = self.scnScene
-        
-        
-        scnScene.background.contents = GameLevel.Level5.getBackgroundPath()
+        preambleScene = SCNScene(named: "/art.scnassets/PreambleScene.scn")
+        gameScene = SCNScene()
+        currentScene = preambleScene
+        currentScene.isPaused = false
+        game.state = .tapToPlay
     }
     
     func setupLights(){
@@ -138,14 +113,14 @@ class GameViewController: UIViewController {
                 lightNode.light = SCNLight()
                 lightNode.light!.type = .omni
                 lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-                scnScene.rootNode.addChildNode(lightNode)
+                gameScene.rootNode.addChildNode(lightNode)
         
                 // create and add an ambient light to the scene
                 let ambientLightNode = SCNNode()
                 ambientLightNode.light = SCNLight()
                 ambientLightNode.light!.type = .ambient
                 ambientLightNode.light!.color = UIColor.darkGray
-                scnScene.rootNode.addChildNode(ambientLightNode)
+                gameScene.rootNode.addChildNode(ambientLightNode)
     }
     
     func setupCamera(){
@@ -154,20 +129,24 @@ class GameViewController: UIViewController {
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
         cameraNode.position = SCNVector3(0.0, 5.0, 10.0)
-        scnScene.rootNode.addChildNode(cameraNode)
+        gameScene.rootNode.addChildNode(cameraNode)
         
     }
     
     
     func setupHUD(){
         
-        self.scnScene.rootNode.addChildNode(hudManager.hudNode)
+        self.gameScene.rootNode.addChildNode(hudManager.hudNode)
         hudManager.hudNode.position = SCNVector3(0.0, 10.0, 0.0)
         hudManager.setTargetWord(targetWord: self.targetWord)
     }
     
     
     func spawnLetterRandomSpawnPoint(){
+        
+        if(game.state != .playing){
+            return
+        }
         
         let spawnPoints: [SpawnPoint] = [
             .BehindCamera(self.cameraNode.position),
@@ -187,13 +166,16 @@ class GameViewController: UIViewController {
     
     func spawnLetter(fromSpawnPoint spawnPoint: SpawnPoint){
         
+        if(game.state != .playing){
+            return
+        }
         
         let spawnPosition = spawnPoint.getRandomPoint()
         
         let randomLetter = LetterBoxGenerator.GetRandomLetterExNihilo(forWord: self.targetWord)
         randomLetter.position = spawnPosition
         
-        scnScene.rootNode.addChildNode(randomLetter)
+        gameScene.rootNode.addChildNode(randomLetter)
         
        
         let (direction, position) = spawnPoint.getImpulseParameters()
@@ -209,6 +191,40 @@ class GameViewController: UIViewController {
         let explosion = SCNParticleSystem(named: "explosion.scnp", inDirectory: nil)!
         
         return explosion
+    }
+    
+    func createRandomClouds(number: Int){
+        
+        print("Creating \(number) random clouds")
+        
+        for idx in 0..<number{
+            print("Creating cloud number \(idx)")
+            createSingleRandomCloud()
+        }
+        
+        if let cloudSpawnPoints = self.cloudSpawnPoints{
+            cloudSpawnPoints.forEach({
+                
+                print("A cloud spawn point exists at x: \($0.x), y: \($0.y), z: \($0.z)")
+            })
+        }
+    }
+    
+    func createSingleRandomCloud(){
+        
+        let cloudNode = CloudGenerator.CreateRandomCloudNode()
+        
+        self.gameScene.rootNode.addChildNode(cloudNode)
+        
+        let spawnPoint = SCNVector3(cloudNode.position.x, cloudNode.position.y, cloudNode.position.z-2)
+        
+        if self.cloudSpawnPoints == nil{
+            self.cloudSpawnPoints = [SCNVector3]()
+            self.cloudSpawnPoints!.append(spawnPoint)
+
+        } else {
+            self.cloudSpawnPoints!.append(spawnPoint)
+        }
     }
     
     func handleTouchFor(node: SCNNode){
@@ -243,20 +259,49 @@ class GameViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        let touch = touches.first!
-        let location = touch.location(in: scnView)
+    
         
-        let hitResults = scnView.hitTest(location, options: nil)
         
-        if let node = hitResults.first?.node{
+            let touch = touches.first!
+            let location = touch.location(in: scnView)
+        
+            let hitResults = scnView.hitTest(location, options: nil)
+        
+            if let node = hitResults.first?.node{
             
-            if(node.name == "HUD"){
-                return
+               
+                if(game.state == .tapToPlay){
+                    if(node.name == "StartGame"){
+                        print("Touched the start game button")
+                        startGame()
+                    }
+                        
+                    if(node.name == "DifficultyBox"){
+                        print("Touched the diffiuclt box")
+                        
+                    
+                        let axisAngle = SCNVector4(x: 10.0, y: 10.0, z: 0.0, w: 90.0)
+                        node.runAction(SCNAction.rotate(toAxisAngle: axisAngle, duration: 1.00))
+                    }
+                }
+                
+        
+                
+                if(game.state == .playing){
+                    
+                    
+                    if(node.name == "HUD" || node.name == "Cloud"){
+                        return
+                    }
+                    
+                    
+                    handleTouchFor(node: node)
+
+                }
+            
+            
             }
-            
-            handleTouchFor(node: node)
-            
-        }
+        
     }
     
     override var shouldAutorotate: Bool {
@@ -281,7 +326,7 @@ class GameViewController: UIViewController {
     }
     
     func removeExcessNodes(){
-        for node in scnScene.rootNode.childNodes{
+        for node in gameScene.rootNode.childNodes{
             if node.presentation.position.y < -2{
                 node.removeFromParentNode()
             }
