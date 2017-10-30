@@ -12,6 +12,25 @@ import SpriteKit
 
 class CloudGenerator{
     
+    
+    enum MenuNodeType: String{
+        
+        case restartGameCloud
+        case saveGameCloud
+        case nextLevelCloud
+        case pauseGameCloud
+        case backMainMenuCloud
+        
+        func getImagePath() -> String{
+            
+            return "/art.scnassets/MenuClouds/\(self.rawValue).png"
+            
+        }
+        
+        
+        
+    }
+    
     enum CloudType:Int{
     
         case Cloud19 = 19
@@ -111,6 +130,38 @@ class CloudGenerator{
         material.isDoubleSided = true
         material.diffuse.contents = cloudType.getImagePath()
         plane.materials = [material]
+        
+        return plane
+    }
+    
+    
+    static func CreateMenuCloudNode(withMenuNodeType menuNodeType: MenuNodeType) -> SCNNode{
+        
+        let plane = CreateMenuCloud(withMenuNodeType: menuNodeType)
+        let node = SCNNode(geometry: plane)
+        node.name = menuNodeType.rawValue
+        
+        return node
+    }
+    
+    static func CreateMenuCloud(withMenuNodeType menuNodeType: MenuNodeType) -> SCNPlane{
+        
+        var size = CloudType.Cloud26.getSize()
+        
+        if(menuNodeType == .pauseGameCloud){
+            size = CGSize(width: size.width/4.00, height: size.height/4.00)
+        }
+        
+        let plane = SCNPlane(width: size.width, height: size.height)
+        
+        let material = SCNMaterial()
+        
+        material.lightingModel = SCNMaterial.LightingModel.constant
+        material.isDoubleSided = true
+        material.diffuse.contents = menuNodeType.getImagePath()
+        plane.materials = [material]
+        
+        print("Plane created: \(plane.description)")
         
         return plane
     }

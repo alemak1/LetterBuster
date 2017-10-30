@@ -11,8 +11,22 @@ import QuartzCore
 import SceneKit
 import GameplayKit
 
+class PreambleNodes{
+    
+    static let GameStartNodeActivePos = SCNVector3(-0.250, 1.50, -2.0)
+    static let GameDifficultyNodeActivePos = SCNVector3(-0.250, -0.90, -2.0)
+    static let GameTitleNodeActivePos = SCNVector3(-0.250, 0.385, -2.0)
+    
+    static let GameStartNodeInactivePos = SCNVector3(-0.2500, 1.50, -6.7)
+    static let GameDifficultyNodeInactivePos = SCNVector3(-0.2500, -0.90, -6.7)
+    static let GameTitleNodeInactivePos = SCNVector3(-0.2500, 0.385, -6.7)
+
+}
+
 class GameViewController: UIViewController {
 
+    
+  
     
     var scnView: SCNView!
     
@@ -44,6 +58,20 @@ class GameViewController: UIViewController {
     var tempWord: String!
     var wordInProgress: String!
     
+    var gameStartNode: SCNNode!
+    var gameDifficultyNode: SCNNode!
+    var gameTitleNode: SCNNode!
+    
+    
+    var worldNode: SCNNode!
+    var overlayNode: SCNNode!
+    
+    var backToMainMenuPlane: SCNNode!
+    var restartGamePlane: SCNNode!
+    var nextLevelPlane: SCNNode!
+    var pauseGamePlane: SCNNode!
+    var saveGamePlane: SCNNode!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,7 +81,6 @@ class GameViewController: UIViewController {
         
         setupView()
         setupInitialScene()
-        
 
 
     }
@@ -73,9 +100,83 @@ class GameViewController: UIViewController {
             self.setupCamera()
             self.setupHUD()
             self.createRandomClouds(number: 5)
+            self.setupOverlayNodes()
 
         })
     }
+    
+    func setupOverlayNodes(){
+        
+        self.overlayNode = SCNNode()
+        self.overlayNode.name = "OverlayNode"
+        self.overlayNode.position = SCNVector3.init(0.0, 0.0, 0.0)
+        self.gameScene.rootNode.addChildNode(self.overlayNode)
+        
+        self.backToMainMenuPlane = CloudGenerator.CreateMenuCloudNode(withMenuNodeType: .backMainMenuCloud)
+        self.pauseGamePlane = CloudGenerator.CreateMenuCloudNode(withMenuNodeType: .pauseGameCloud)
+        self.restartGamePlane = CloudGenerator.CreateMenuCloudNode(withMenuNodeType: .restartGameCloud)
+        self.saveGamePlane = CloudGenerator.CreateMenuCloudNode(withMenuNodeType: .saveGameCloud)
+        self.nextLevelPlane = CloudGenerator.CreateMenuCloudNode(withMenuNodeType: .nextLevelCloud)
+        
+        overlayNode.addChildNode(self.backToMainMenuPlane)
+        overlayNode.addChildNode(self.pauseGamePlane)
+        overlayNode.addChildNode(self.restartGamePlane)
+        overlayNode.addChildNode(self.saveGamePlane)
+        overlayNode.addChildNode(self.nextLevelPlane)
+        
+        let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
+        
+    
+        self.positionMenuBehindCamera()
+        
+        self.nextLevelPlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos+20)
+        
+        self.pauseGamePlane.position = SCNVector3(cameraXPos+1, cameraYPos-2.5, cameraZPos-5)
+        
+    }
+    
+    func positionGameWinMenuInFrontOfCamera(){
+        
+        let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
+
+        self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos-5)
+        self.nextLevelPlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos-5)
+
+    }
+    
+    func positionGameLossMenuInFrontOfCamera(){
+        let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
+
+        self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos-5)
+        self.restartGamePlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos-5)
+
+        
+    }
+    
+    
+    func positionMenuInFrontOfCamera(){
+        let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
+        
+        
+        self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos-5)
+        self.restartGamePlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos-5)
+        self.saveGamePlane.position = SCNVector3(cameraXPos, cameraYPos-1, cameraZPos-5)
+        
+
+    }
+    
+    func positionMenuBehindCamera(){
+        let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
+        
+        
+        self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos+5)
+        self.restartGamePlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos+5)
+        self.saveGamePlane.position = SCNVector3(cameraXPos, cameraYPos-1, cameraZPos+5)
+        
+
+        
+    }
+    
     
     func startPreamble(){
         //preambleScene.isPaused = true
@@ -101,7 +202,24 @@ class GameViewController: UIViewController {
     func setupInitialScene(){
         
         preambleScene = SCNScene(named: "/art.scnassets/PreambleScene.scn")
+       
+        gameStartNode = preambleScene.rootNode.childNode(withName: "StartGame", recursively: true)
+        gameDifficultyNode = preambleScene.rootNode.childNode(withName: "DifficultyBox", recursively: true)
+        gameTitleNode = preambleScene.rootNode.childNode(withName: "LetterBox", recursively: true)
+        
+       
+        gameTitleNode.runAction(SCNAction.move(to: PreambleNodes.GameTitleNodeActivePos, duration: 1.00), completionHandler: {})
+        gameStartNode.runAction(SCNAction.move(to: PreambleNodes.GameStartNodeActivePos, duration: 1.00), completionHandler: {})
+        gameDifficultyNode.runAction(SCNAction.move(to: PreambleNodes.GameDifficultyNodeActivePos, duration: 1.00), completionHandler: {})
+        
+        print("Game start node loaded with the following info: \(gameStartNode.description)")
+        print("Game difficult node loaded with the following info: \(gameDifficultyNode.description)")
+        
         gameScene = SCNScene()
+        self.worldNode = SCNNode()
+        self.worldNode.position = SCNVector3.init(0.0, 0.0, 0.0)
+        gameScene.rootNode.addChildNode(self.worldNode)
+        
         currentScene = preambleScene
         currentScene.isPaused = false
         game.state = .tapToPlay
@@ -113,14 +231,14 @@ class GameViewController: UIViewController {
                 lightNode.light = SCNLight()
                 lightNode.light!.type = .omni
                 lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-                gameScene.rootNode.addChildNode(lightNode)
+                worldNode.addChildNode(lightNode)
         
                 // create and add an ambient light to the scene
                 let ambientLightNode = SCNNode()
                 ambientLightNode.light = SCNLight()
                 ambientLightNode.light!.type = .ambient
                 ambientLightNode.light!.color = UIColor.darkGray
-                gameScene.rootNode.addChildNode(ambientLightNode)
+                worldNode.addChildNode(ambientLightNode)
     }
     
     func setupCamera(){
@@ -129,14 +247,14 @@ class GameViewController: UIViewController {
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
         cameraNode.position = SCNVector3(0.0, 5.0, 10.0)
-        gameScene.rootNode.addChildNode(cameraNode)
+        worldNode.addChildNode(cameraNode)
         
     }
     
     
     func setupHUD(){
         
-        self.gameScene.rootNode.addChildNode(hudManager.hudNode)
+        worldNode.addChildNode(hudManager.hudNode)
         hudManager.hudNode.position = SCNVector3(0.0, 10.0, 0.0)
         hudManager.setTargetWord(targetWord: self.targetWord)
     }
@@ -175,7 +293,7 @@ class GameViewController: UIViewController {
         let randomLetter = LetterBoxGenerator.GetRandomLetterExNihilo(forWord: self.targetWord)
         randomLetter.position = spawnPosition
         
-        gameScene.rootNode.addChildNode(randomLetter)
+        worldNode.addChildNode(randomLetter)
         
        
         let (direction, position) = spawnPoint.getImpulseParameters()
@@ -214,7 +332,7 @@ class GameViewController: UIViewController {
         
         let cloudNode = CloudGenerator.CreateRandomCloudNode()
         
-        self.gameScene.rootNode.addChildNode(cloudNode)
+        worldNode.addChildNode(cloudNode)
         
         let spawnPoint = SCNVector3(cloudNode.position.x, cloudNode.position.y, cloudNode.position.z-2)
         
@@ -289,6 +407,31 @@ class GameViewController: UIViewController {
                 
                 if(game.state == .playing){
                     
+                    if(node.name == CloudGenerator.MenuNodeType.pauseGameCloud.rawValue){
+                        print("YOU TOUCHED THE PAUSE BUTTON")
+                        
+                        if(self.worldNode.isPaused){
+                            self.positionMenuBehindCamera()
+                            self.worldNode.isPaused = false
+                        } else {
+                            self.positionMenuInFrontOfCamera()
+                            self.worldNode.isPaused = true
+                        }
+                        return
+                    }
+                    
+                    
+                    if(node.name == CloudGenerator.MenuNodeType.nextLevelCloud.rawValue){
+                        return
+                    }
+                    
+                    if(node.name == CloudGenerator.MenuNodeType.restartGameCloud.rawValue){
+                        return
+                    }
+                    
+                    if(node.name == CloudGenerator.MenuNodeType.backMainMenuCloud.rawValue){
+                        return
+                    }
                     
                     if(node.name == "HUD" || node.name == "Cloud"){
                         return
@@ -345,6 +488,10 @@ extension GameViewController: SCNSceneRendererDelegate{
             
             spawnLetterRandomSpawnPoint()
             spawnTime = time + Double(randomTimeDist.nextUniform())
+            
+            if(self.wordInProgress == self.targetWord){
+                print("You've won the game!")
+            }
         }
         
         removeExcessNodes()
