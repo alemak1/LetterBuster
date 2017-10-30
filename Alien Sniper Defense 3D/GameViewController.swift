@@ -23,6 +23,15 @@ class PreambleNodes{
 
 }
 
+struct SceneConfiguration{
+    var numberOfSpawnPoints: Int
+    var velocityLowerLimit: Int
+    var velocityUpperLimit: Int
+    var extraLetterTypes: [LetterBoxGenerator.LetterType]?
+}
+
+
+
 class GameViewController: UIViewController {
 
     
@@ -433,6 +442,10 @@ class GameViewController: UIViewController {
                         return
                     }
                     
+                    if(node.name == CloudGenerator.MenuNodeType.saveGameCloud.rawValue){
+                        return
+                    }
+                    
                     if(node.name == "HUD" || node.name == "Cloud"){
                         return
                     }
@@ -486,12 +499,19 @@ extension GameViewController: SCNSceneRendererDelegate{
         
         if(time > spawnTime){
             
-            spawnLetterRandomSpawnPoint()
+            if(!worldNode.isPaused){
+                spawnLetterRandomSpawnPoint()
+            }
             spawnTime = time + Double(randomTimeDist.nextUniform())
             
             if(self.wordInProgress == self.targetWord){
                 print("You've won the game!")
             }
+            
+            if(self.hudManager.lives <= 0){
+                print("You've lost the game!")
+            }
+            
         }
         
         removeExcessNodes()

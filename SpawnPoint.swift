@@ -37,6 +37,53 @@ enum SpawnPoint{
         
     }
     
+    
+    func getImpulseParametersWith(velocityLowerLimit: Int, velocityHigherLimit: Int) -> (SCNVector3, SCNVector3){
+        //TODO: need to test the code
+        
+        let randomSrc = GKRandomSource()
+        
+        var randomDistX: GKRandomDistribution!
+        var randomDistY: GKRandomDistribution!
+        var randomDistZ: GKRandomDistribution!
+        
+        switch self {
+            /** Letters are dropped from the top of the screen, so no impulse is applied in the y or z direction **/
+        case .Top( _):
+            randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
+            randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
+            randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: -velocityLowerLimit, highestValue: velocityHigherLimit)
+        case .BehindCamera( _):
+            randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -1, highestValue: 1)
+            randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 7, highestValue: 14)
+            randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: -velocityHigherLimit, highestValue: -velocityLowerLimit)
+        case .Left( _):
+            randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: velocityLowerLimit, highestValue: velocityHigherLimit)
+            randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 12, highestValue: 20)
+            randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
+        case .Right( _):
+            randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -velocityHigherLimit, highestValue: -velocityLowerLimit)
+            randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 12, highestValue: 20)
+            randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
+        case .Bottom(_):
+            randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
+            randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: velocityLowerLimit, highestValue: velocityHigherLimit)
+            randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
+            
+        }
+        
+        let randomX = randomDistX.nextInt()
+        let randomY = randomDistY.nextInt()
+        let randomZ = randomDistZ.nextInt()
+        
+        let direction = SCNVector3(randomX, randomY, randomZ)
+        let position = SCNVector3(0.05, 0.05, 0.05)
+        
+        return (direction,position)
+
+        
+    }
+    
     func getImpulseParameters() -> (SCNVector3,SCNVector3){
         let randomSrc = GKRandomSource()
         
