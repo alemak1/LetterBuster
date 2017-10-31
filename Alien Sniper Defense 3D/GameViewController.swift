@@ -84,9 +84,6 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.targetWord = "Chinese"
-        self.wordInProgress = ""
-        self.tempWord = self.targetWord
         
         setupView()
         setupInitialScene()
@@ -99,19 +96,35 @@ class GameViewController: UIViewController {
         preambleScene.isPaused = true
         let transition = SKTransition.doorsOpenVertical(withDuration: 1.00)
         
-        gameScene.background.contents = GameLevel.Level5.getBackgroundPath()
-        
+        self.setupGameScene()
+        self.setupGameSceneBackground()
+
         scnView.present(gameScene, with: transition, incomingPointOfView: nil, completionHandler: {
             
             self.game.state = .playing
+            self.setTargetWord(targetWord: "Love")
+            self.setupWorldNode()
             self.game.setupSounds()
-            self.gameScene.isPaused = false
             self.setupCamera()
             self.setupHUD()
             self.createRandomClouds(number: 5)
             self.setupOverlayNodes()
 
         })
+    }
+    
+    func setTargetWord(targetWord: String){
+        self.targetWord = targetWord
+        self.wordInProgress = ""
+        self.tempWord = self.targetWord
+        self.hudManager.configureHUDStrings(withTargetWord: self.targetWord)
+        
+    }
+    
+    func setupGameSceneBackground(){
+        
+        gameScene.background.contents = GameLevel.Level5.getBackgroundPath()
+
     }
     
     func setupOverlayNodes(){
@@ -139,8 +152,14 @@ class GameViewController: UIViewController {
         self.positionMenuBehindCamera()
         
         self.nextLevelPlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos+20)
-        
         self.pauseGamePlane.position = SCNVector3(cameraXPos+1, cameraYPos-2.5, cameraZPos-5)
+        
+        let introPanelCloud = CloudGenerator.GetTargetWordCloud(with: self.cameraNode.position, string1: "Level 1", string2: "Target Word:", string3: self.targetWord)
+        
+        overlayNode.addChildNode(introPanelCloud)
+        
+        introPanelCloud.rotation = SCNVector4(x: 1, y: 0, z: 0, w: 3.14159265)
+
         
     }
     
@@ -221,17 +240,25 @@ class GameViewController: UIViewController {
         gameStartNode.runAction(SCNAction.move(to: PreambleNodes.GameStartNodeActivePos, duration: 1.00), completionHandler: {})
         gameDifficultyNode.runAction(SCNAction.move(to: PreambleNodes.GameDifficultyNodeActivePos, duration: 1.00), completionHandler: {})
         
-        print("Game start node loaded with the following info: \(gameStartNode.description)")
-        print("Game difficult node loaded with the following info: \(gameDifficultyNode.description)")
-        
-        gameScene = SCNScene()
-        self.worldNode = SCNNode()
-        self.worldNode.position = SCNVector3.init(0.0, 0.0, 0.0)
-        gameScene.rootNode.addChildNode(self.worldNode)
         
         currentScene = preambleScene
         currentScene.isPaused = false
         game.state = .tapToPlay
+    }
+    
+    
+    func setupGameScene(){
+        gameScene = SCNScene()
+        self.gameScene.isPaused = false
+
+
+    }
+    
+    func setupWorldNode(){
+        self.worldNode = SCNNode()
+        self.worldNode.position = SCNVector3.init(0.0, 0.0, 0.0)
+        self.worldNode.isPaused = true
+        gameScene.rootNode.addChildNode(self.worldNode)
     }
     
     func setupLights(){
@@ -372,17 +399,21 @@ class GameViewController: UIViewController {
             hudManager.lives -= 1
         }
         
-        let explosion = createExplosionParticles()
+        destroyNode(node: node)
+    }
     
+    
+    func destroyNode(node: SCNNode){
+        let explosion = createExplosionParticles()
+        
         node.addParticleSystem(explosion)
         
         node.runAction(SCNAction.wait(duration: 0.50), completionHandler: {
             node.removeFromParentNode()
-
+            
         })
+        
     }
-    
-    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -446,6 +477,12 @@ class GameViewController: UIViewController {
                         return
                     }
                     
+                    if(node.name == "IntroPanel"){
+                        destroyNode(node: node)
+                        worldNode.isPaused = false
+                        return
+                    }
+                    
                     if(node.name == "HUD" || node.name == "Cloud"){
                         return
                     }
@@ -496,6 +533,11 @@ extension GameViewController: SCNSceneRendererDelegate{
     
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
+        if(game.state != .playing){
+            return
+        }
+        
         
         if(time > spawnTime){
             

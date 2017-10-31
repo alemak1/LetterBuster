@@ -91,6 +91,25 @@ class CloudGenerator{
     }
     
 
+    static func GetTargetWordCloud(with camerPosition: SCNVector3, string1: String, string2: String, string3: String) -> SCNNode{
+        
+        let xPos = camerPosition.x
+        let yPos = camerPosition.y
+        let zPos = camerPosition.z - 3
+        
+        let spawnPoint = SCNVector3(xPos, yPos, zPos)
+        
+        let cloud = CloudGenerator.CreateIntroPanelCloud(withString: string1, string2: string2, string3: string3)
+        let cloudNode = SCNNode(geometry: cloud)
+        
+        cloudNode.name = "IntroPanel"
+        
+        cloudNode.position = spawnPoint
+        
+        return cloudNode
+        
+    }
+    
     static func CreateRandomCloudNode() -> SCNNode{
         
         let xPos = -4 + Int(arc4random_uniform(UInt32(8)))
@@ -142,6 +161,84 @@ class CloudGenerator{
         node.name = menuNodeType.rawValue
         
         return node
+    }
+    
+    
+    static func CreateIntroPanelCloud(withString string1: String, string2: String, string3: String) -> SCNPlane{
+        
+        let size = CloudType.Cloud30.getSize()
+        
+        let plane = SCNPlane(width: size.width, height: size.height)
+        
+        let screenWidth = UIScreen.main.bounds.size.width
+        let screenHeight = UIScreen.main.bounds.size.height
+        
+        let adjustedSceneSize = CGSize(width: screenWidth, height: screenHeight)
+        
+        let skScene = SKScene(size: adjustedSceneSize)
+        skScene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        skScene.scaleMode = .aspectFit
+        skScene.backgroundColor = SKColor.clear
+        
+        
+        let bgTexture = SKTexture(image: #imageLiteral(resourceName: "cloud30.png"))
+        
+        let aspectRatio = size.height/size.width
+        let cloudWidth = screenWidth
+        let cloudHeight = screenWidth*aspectRatio
+
+        let adjustedSize = CGSize(width: cloudWidth, height: cloudHeight)
+        let bgSprite = SKSpriteNode(texture: bgTexture, color: .clear, size: adjustedSize)
+        
+        bgSprite.xScale *= 0.80
+        bgSprite.yScale *= 0.80
+        
+        skScene.addChild(bgSprite)
+        
+        bgSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        bgSprite.position = CGPoint.zero
+        
+        
+        let labelNode1 = SKLabelNode(fontNamed: "Avenir")
+        labelNode1.text = string1
+        labelNode1.fontSize = 22.0
+        labelNode1.fontColor = SKColor.white
+        labelNode1.zPosition = 2
+        labelNode1.horizontalAlignmentMode = .center
+        
+        let labelNode2 = SKLabelNode(fontNamed: "Avenir")
+        labelNode2.text = string2
+        labelNode2.zPosition = 2
+        labelNode2.fontColor = SKColor.white
+        labelNode2.fontSize = 22.0
+        labelNode2.horizontalAlignmentMode = .center
+        
+
+        
+        let labelNode3 = SKLabelNode(fontNamed: "Avenir")
+        labelNode3.text = string3
+        labelNode3.zPosition = 2
+        labelNode3.fontColor = SKColor.white
+        labelNode3.fontSize = 22.0
+        labelNode3.horizontalAlignmentMode = .center
+
+       skScene.addChild(labelNode1)
+       skScene.addChild(labelNode2)
+       skScene.addChild(labelNode3)
+        
+        labelNode1.position = CGPoint(x: 0.0, y: 40.0)
+        labelNode2.position = CGPoint(x: 0.0, y: 0.0)
+        labelNode3.position = CGPoint(x: 0.0, y: -40.0)
+        
+        let material = SCNMaterial()
+        
+        material.lightingModel = SCNMaterial.LightingModel.constant
+        material.isDoubleSided = true
+        material.diffuse.contents = skScene
+        
+        plane.materials = [material]
+        
+        return plane
     }
     
     static func CreateMenuCloud(withMenuNodeType menuNodeType: MenuNodeType) -> SCNPlane{

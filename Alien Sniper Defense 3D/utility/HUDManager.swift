@@ -21,8 +21,8 @@ class HUDManager {
     
     var score:Int
     
-    var targetWord: String = String("LOVING")
-    var wordInProgress: String = String("LOVING")
+    var targetWord: String!
+    var wordInProgress: String!
     
     var highScore:Int
     var lastScore:Int
@@ -100,7 +100,17 @@ class HUDManager {
         hudNode = SCNNode(geometry: plane)
         hudNode.name = "HUD"
         hudNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: 3.14159265)
+        
+        self.targetWord = ""
+        self.wordInProgress = ""
 
+    }
+    
+    func configureHUDStrings(withTargetWord targetWord: String){
+        
+        self.setTargetWord(targetWord: targetWord)
+        self.setTargetWord(targetWord: "")
+        
     }
     
     func setTargetWord(targetWord: String){
