@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD392D691FA8A3DD002E535F /* PreambleNodePositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD392D681FA8A3DD002E535F /* PreambleNodePositions.swift */; };
 		BD413D331FA4569A00D880DD /* scene1.scn in Resources */ = {isa = PBXBuildFile; fileRef = BD413D321FA4569A00D880DD /* scene1.scn */; };
 		BD45E6451FA46FCA008ACCD7 /* HUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD45E6441FA46FCA008ACCD7 /* HUDManager.swift */; };
 		BD45E6471FA472F9008ACCD7 /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD45E6461FA472F9008ACCD7 /* GameLevel.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BD392D681FA8A3DD002E535F /* PreambleNodePositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreambleNodePositions.swift; sourceTree = "<group>"; };
 		BD413D321FA4569A00D880DD /* scene1.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = scene1.scn; sourceTree = "<group>"; };
 		BD45E6441FA46FCA008ACCD7 /* HUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDManager.swift; sourceTree = "<group>"; };
 		BD45E6461FA472F9008ACCD7 /* GameLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		BDA110E41FA3272A00341B34 = {
 			isa = PBXGroup;
 			children = (
+				BD392D681FA8A3DD002E535F /* PreambleNodePositions.swift */,
 				BDF8E0371FA8803600393926 /* TargetWordsSimple.plist */,
 				BDF8E0351FA87CD600393926 /* TargetWords.plist */,
 				BD9A862E1FA71E4D00DD9910 /* OverlayNodes.scn */,
@@ -212,6 +215,7 @@
 				BDA110F11FA3272A00341B34 /* AppDelegate.swift in Sources */,
 				BD45E6471FA472F9008ACCD7 /* GameLevel.swift in Sources */,
 				BD4D51F81FA41FC100A9870E /* LetterBox.swift in Sources */,
+				BD392D691FA8A3DD002E535F /* PreambleNodePositions.swift in Sources */,
 				BD7CFAAA1FA5E2E3003BC284 /* Cloud.swift in Sources */,
 				BD7CFAA81FA5D417003BC284 /* GameHelper.swift in Sources */,
 				BD7CFAAC1FA5F1D8003BC284 /* SpawnPoint.swift in Sources */,

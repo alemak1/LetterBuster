@@ -23,6 +23,7 @@ class HUDManager {
     
     var targetWord: String!
     var wordInProgress: String!
+    var totalNodesSpawned: Int = 0
     
     var highScore:Int
     var lastScore:Int
@@ -33,7 +34,7 @@ class HUDManager {
     var labelNode1:SKLabelNode!
     var labelNode2:SKLabelNode!
     var labelNode3:SKLabelNode!
-
+    var labelNode4: SKLabelNode!
     
     static let sharedInstance = HUDManager()
     
@@ -70,27 +71,33 @@ class HUDManager {
         skScene.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
         skScene.anchorPoint = CGPoint(x: 0.5, y: 0.0)
         
+        labelNode4 = SKLabelNode(fontNamed: "Avenir-Bold")
+        labelNode4.fontSize = 40
+        labelNode4.position.y = 10
+        labelNode4.position.x = 0.0
+        
         labelNode1 = SKLabelNode(fontNamed: "Avenir-Bold")
-        labelNode1.fontSize = 50
-        labelNode1.position.y = 10
+        labelNode1.fontSize = 40
+        labelNode1.position.y = 70
         labelNode1.position.x = 0.0
         
         labelNode2 = SKLabelNode(fontNamed: "Avenir-Bold")
-        labelNode2.fontSize = 50
-        labelNode2.position.y = 90
+        labelNode2.fontSize = 40
+        labelNode2.position.y = 130
         labelNode2.position.x = 0.0
         
         labelNode3 = SKLabelNode(fontNamed: "Didot")
-        labelNode3.fontSize = 90
-        labelNode3.position.y = 170
+        labelNode3.fontSize = 50
+        labelNode3.position.y = 190
         labelNode3.position.x = 0.0
         
         
         skScene.addChild(labelNode1)
         skScene.addChild(labelNode2)
         skScene.addChild(labelNode3)
-
-        let plane = SCNPlane(width: 5, height: 1)
+        skScene.addChild(labelNode4)
+        
+        let plane = SCNPlane(width: 5, height: 3)
         let material = SCNMaterial()
         material.lightingModel = SCNMaterial.LightingModel.constant
         material.isDoubleSided = true
@@ -125,6 +132,10 @@ class HUDManager {
         self.lives = lives
     }
     
+    func setTotalNodesSpawned(totalNodes: Int){
+        self.totalNodesSpawned = totalNodes
+    }
+    
     func updateHUD() {
         let targetWordUpperCased = self.targetWord.uppercased()
         let wordInProgressUpperCased = self.wordInProgress.uppercased()
@@ -132,6 +143,7 @@ class HUDManager {
         labelNode1.text = "Target Word: \(targetWordUpperCased) "
         labelNode2.text = "Word-in-Progress: \(wordInProgressUpperCased)"
         labelNode3.text = "❤️\(lives)"
+        labelNode4.text = "Spawn Limit: \(GameHelper.sharedInstance.getSpawnLimit()) , Letters Spawned:\(self.totalNodesSpawned)"
 
     }
     
