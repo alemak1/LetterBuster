@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Easy</key>
+	<array>
+		<string>End</string>
+		<string>Lie</string>
+		<string>Pun</string>
+		<string>Win</string>
+		<string>Art</string>
+		<string>Fun</string>
+		<string>Me</string>
+		<string>Eat</string>
+		<string>Dog</string>
+		<string>Cat</string>
+		<string>Sun</string>
+	</array>
+	<key>Medium</key>
+	<array>
+		<string>Plant</string>
+		<string>Start</string>
+		<string>Fall</string>
+		<string>Punch</string>
+		<string>Lose</string>
+		<string>Smart</string>
+		<string>Slow</string>
+		<string>Fast</string>
+		<string>Love</string>
+		<string>Bird</string>
+	</array>
+	<key>Hard</key>
+	<array>
+		<string>Watchful</string>
+		<string>Fanatic</string>
+		<string>Fierce</string>
+		<string>Ferocious</string>
+		<string>Funny</string>
+		<string>Biology</string>
+		<string>Neurology</string>
+		<string>Insinuation</string>
+		<string>Implication</string>
+		<string>Practice</string>
+		<string>Spring</string>
+		<string>Autumn</string>
+		<string>Winter</string>
+		<string>Spring</string>
+		<string>Summer</string>
+		<string>Sensation</string>
+	</array>
+</dict>
+</plist>

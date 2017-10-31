@@ -11,10 +11,17 @@ import SceneKit
 
 class GameHelper{
     
+    enum Difficulty: String{
+        case Easy
+        case Medium
+        case Hard
+    }
+    
     enum State{
             case playing
             case tapToPlay
             case gameOver
+            case missionCompleted
     }
     
     static let sharedInstance = GameHelper()
@@ -24,13 +31,10 @@ class GameHelper{
     }
     
     var state: State = .tapToPlay
+    var difficultyLevel: Difficulty = .Medium
+    var level: Int = 1
     
-    func setupSounds(){
-        
-    }
     
-    func reset(){
-        
-    }
+   
     
 }

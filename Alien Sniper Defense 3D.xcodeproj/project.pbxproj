@@ -25,6 +25,8 @@
 		BDA110F81FA3272A00341B34 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA110F61FA3272A00341B34 /* Main.storyboard */; };
 		BDA110FA1FA3272A00341B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDA110F91FA3272A00341B34 /* Assets.xcassets */; };
 		BDA110FD1FA3272A00341B34 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA110FB1FA3272A00341B34 /* LaunchScreen.storyboard */; };
+		BDF8E0361FA87CD600393926 /* TargetWords.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDF8E0351FA87CD600393926 /* TargetWords.plist */; };
+		BDF8E0381FA8803600393926 /* TargetWordsSimple.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDF8E0371FA8803600393926 /* TargetWordsSimple.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		BDA110F91FA3272A00341B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BDA110FC1FA3272A00341B34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BDA110FE1FA3272A00341B34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDF8E0351FA87CD600393926 /* TargetWords.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = TargetWords.plist; sourceTree = "<group>"; };
+		BDF8E0371FA8803600393926 /* TargetWordsSimple.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = TargetWordsSimple.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,8 @@
 		BDA110E41FA3272A00341B34 = {
 			isa = PBXGroup;
 			children = (
+				BDF8E0371FA8803600393926 /* TargetWordsSimple.plist */,
+				BDF8E0351FA87CD600393926 /* TargetWords.plist */,
 				BD9A862E1FA71E4D00DD9910 /* OverlayNodes.scn */,
 				BD7CFAAB1FA5F1D8003BC284 /* SpawnPoint.swift */,
 				BD7CFAA91FA5E2E3003BC284 /* Cloud.swift */,
@@ -186,8 +192,10 @@
 				BD9A862F1FA71E4D00DD9910 /* OverlayNodes.scn in Resources */,
 				BDA110FD1FA3272A00341B34 /* LaunchScreen.storyboard in Resources */,
 				BD413D331FA4569A00D880DD /* scene1.scn in Resources */,
+				BDF8E0361FA87CD600393926 /* TargetWords.plist in Resources */,
 				BD4D521E1FA440C000A9870E /* spark.png in Resources */,
 				BD4D521D1FA440C000A9870E /* explosion.scnp in Resources */,
+				BDF8E0381FA8803600393926 /* TargetWordsSimple.plist in Resources */,
 				BDA110FA1FA3272A00341B34 /* Assets.xcassets in Resources */,
 				BDA110F81FA3272A00341B34 /* Main.storyboard in Resources */,
 			);

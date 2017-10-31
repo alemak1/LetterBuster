@@ -66,6 +66,7 @@ class GameViewController: UIViewController {
     var targetWord: String!
     var tempWord: String!
     var wordInProgress: String!
+    var wordsArray = [String]()
     
     var gameStartNode: SCNNode!
     var gameDifficultyNode: SCNNode!
@@ -84,11 +85,21 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        loadTargetWords()
         setupView()
         setupInitialScene()
 
 
+    }
+    
+    
+    func loadTargetWords(){
+        
+        let path = Bundle.main.path(forResource: "TargetWordsSimple", ofType: "plist")
+        let dictionary = NSDictionary(contentsOfFile: path!)
+        let key = game.difficultyLevel.rawValue
+        
+        self.wordsArray = dictionary![key] as! Array<String>
     }
     
     func startGame(){
@@ -102,7 +113,8 @@ class GameViewController: UIViewController {
         scnView.present(gameScene, with: transition, incomingPointOfView: nil, completionHandler: {
             
             self.game.state = .playing
-            self.setTargetWord(targetWord: "Love")
+            
+            self.setRandomTargetWord()
             self.setupWorldNode()
             self.game.setupSounds()
             self.setupCamera()
@@ -111,6 +123,14 @@ class GameViewController: UIViewController {
             self.setupOverlayNodes()
 
         })
+    }
+    
+    func setRandomTargetWord(){
+        let randomIndex = Int(arc4random_uniform(UInt32(self.wordsArray.count)))
+        let randomWord = self.wordsArray[randomIndex]
+        
+        self.setTargetWord(targetWord: randomWord)
+        
     }
     
     func setTargetWord(targetWord: String){
@@ -302,7 +322,7 @@ class GameViewController: UIViewController {
             return
         }
         
-        let spawnPoints: [SpawnPoint] = [
+        var spawnPoints: [SpawnPoint] = [
             .BehindCamera(self.cameraNode.position),
             .Top(self.cameraNode.position),
             .Bottom(self.cameraNode.position),
@@ -310,6 +330,11 @@ class GameViewController: UIViewController {
             .Right(self.cameraNode.position),
 
         ]
+        
+        
+        if let cloudSpawnPoints = self.cloudSpawnPoints{
+            spawnPoints.append(SpawnPoint.CloudSpawnPoints(cloudSpawnPoints))
+        }
         
         let randomIdx = Int(arc4random_uniform(UInt32(spawnPoints.count)))
         let randomSpawnPoint = spawnPoints[randomIdx]

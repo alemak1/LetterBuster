@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Easy</key>
+	<array>
+		<dict>
+			<key>PartOfSpeech</key>
+			<string>noun</string>
+			<key>Example</key>
+			<string>The new Brazilian movie was the sensation of the film festival.</string>
+			<key>Definition</key>
+			<string>a state of excited feeling or interest caused among a number of persons or throughout a community, as by some rumor or occurrence, or the cause of such feeling or interest:</string>
+			<key>Word</key>
+			<string>Sensation</string>
+		</dict>
+	</array>
+	<key>Medium</key>
+	<array>
+		<dict>
+			<key>PartOfSpeech</key>
+			<string>verb</string>
+			<key>Example</key>
+			<string>The temperature fell ten degrees. Stock prices fell to a new low for the year.</string>
+			<key>Definition</key>
+			<string>to become less or lower; become of a lower level, degree, amount, quality, value, number, etc.; decline</string>
+			<key>Word</key>
+			<string>Fall</string>
+		</dict>
+		<dict>
+			<key>PartOfSpeech</key>
+			<string>noun</string>
+			<key>Example</key>
+			<string>The children enjoyed playing with leaves last Fall.</string>
+			<key>Definition</key>
+			<string>the season of the year that comes after summer and before winter; autumn</string>
+			<key>Word</key>
+			<string>Fall</string>
+		</dict>
+	</array>
+	<key>Hard</key>
+	<array>
+		<dict>
+			<key>PartOfSpeech</key>
+			<string>noun</string>
+			<key>Example</key>
+			<string>The new Brazilian movie was the sensation of the film festival.</string>
+			<key>Definition</key>
+			<string>a state of excited feeling or interest caused among a number of persons or throughout a community, as by some rumor or occurrence, or the cause of such feeling or interest:</string>
+			<key>Word</key>
+			<string>Sensation</string>
+		</dict>
+	</array>
+</dict>
+</plist>

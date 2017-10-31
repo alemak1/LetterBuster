@@ -18,6 +18,7 @@ enum SpawnPoint{
     case Top(SCNVector3)
     case Bottom(SCNVector3)
     case BehindCamera(SCNVector3)
+    case CloudSpawnPoints([SCNVector3])
     
     func getRandomPoint() -> SCNVector3{
         
@@ -33,6 +34,10 @@ enum SpawnPoint{
             return SCNVector3(cameraPosition.x, cameraPosition.y-5.00, -10)
         case .Top(let cameraPosition):
             return SCNVector3(cameraPosition.x, cameraPosition.y+15.00, -10)
+        case .CloudSpawnPoints(let cloudSpawnPoints):
+            let randomIdx = Int(arc4random_uniform(UInt32(cloudSpawnPoints.count)))
+            return cloudSpawnPoints[randomIdx]
+            
         }
         
     }
@@ -69,6 +74,10 @@ enum SpawnPoint{
             randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
             randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: velocityLowerLimit, highestValue: velocityHigherLimit)
             randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
+        case .CloudSpawnPoints(_):
+            randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
+            randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 2, highestValue: 5)
+            randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: velocityLowerLimit, highestValue: velocityHigherLimit)
             
         }
         
@@ -113,7 +122,11 @@ enum SpawnPoint{
             randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
             randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 10, highestValue: 15)
             randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 0, highestValue: 0)
-            
+        case .CloudSpawnPoints(_):
+            randomDistX = GKRandomDistribution(randomSource: randomSrc, lowestValue: -2, highestValue: 2)
+            randomDistY = GKRandomDistribution(randomSource: randomSrc, lowestValue: 5, highestValue: 10)
+            randomDistZ = GKRandomDistribution(randomSource: randomSrc, lowestValue: 5, highestValue: 15)
+
         }
         
         let randomX = randomDistX.nextInt()
