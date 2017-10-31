@@ -109,12 +109,10 @@ class GameViewController: UIViewController {
         if(!isRestart){
             self.setupGameScene()
             self.setupGameSceneBackground()
-        } else {
-            
-            self.totalNodesSpawned = 0
-            hudManager.lives = 3
-        
         }
+        
+        self.totalNodesSpawned = 0
+        hudManager.lives = 3
         
         canStartSpawning = false
         self.gameScene.isPaused = false
