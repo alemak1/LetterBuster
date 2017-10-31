@@ -116,7 +116,6 @@ class GameViewController: UIViewController {
             
             self.setRandomTargetWord()
             self.setupWorldNode()
-            self.game.setupSounds()
             self.setupCamera()
             self.setupHUD()
             self.createRandomClouds(number: 5)
@@ -234,7 +233,6 @@ class GameViewController: UIViewController {
         scnView.present(preambleScene, with: transition, incomingPointOfView: nil, completionHandler: {
             
             self.game.state = .tapToPlay
-            self.game.setupSounds()
         })
     }
     
