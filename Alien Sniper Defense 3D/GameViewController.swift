@@ -194,8 +194,7 @@ class GameViewController: UIViewController {
             self.hudManager.wordInProgress = ""
             self.tempWord = self.targetWord
 
-          
-
+         
         })
         
     }
@@ -471,6 +470,12 @@ class GameViewController: UIViewController {
     }
     
    
+    //MARK: ******** Handler for Orientation Changes
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        
+        
+    }
     
     //MARK: ******* Touches Began
     
@@ -592,13 +597,12 @@ class GameViewController: UIViewController {
                     }
                     
                     if(node.name == "IntroPanel"){
-                        destroyNode(node: node, completion: {
-                            
-                            self.canStartSpawning = true
-
-                        })
+                        
+                        node.removeFromParentNode()
+                        self.canStartSpawning = true
                         worldNode.isPaused = false
                         return
+                        
                     }
                     
                    
@@ -879,6 +883,7 @@ extension GameViewController: SCNSceneRendererDelegate{
             positionGameWinMenu(hasWonGame: true)
         }
         
+        /**
         if(self.hudManager.lives <= 0){
             print("You've lost the game: no more lives!")
             game.state = .gameOver
@@ -891,6 +896,7 @@ extension GameViewController: SCNSceneRendererDelegate{
             game.state = .gameOver
             positionGameLossMenu(hasLostGame: true, tooManyNodes: true)
         }
+        **/
         
         removeExcessNodes()
         
