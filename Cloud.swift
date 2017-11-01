@@ -20,6 +20,9 @@ class CloudGenerator{
         case nextLevelCloud
         case pauseGameCloud
         case backMainMenuCloud
+        case gameWinCloud
+        case gameLossCloud1
+        case gameLossCloud2
         
         func getImagePath() -> String{
             

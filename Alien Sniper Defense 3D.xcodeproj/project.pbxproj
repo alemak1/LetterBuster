@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		BD392D691FA8A3DD002E535F /* PreambleNodePositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD392D681FA8A3DD002E535F /* PreambleNodePositions.swift */; };
+		BD3996461FA9BEB100514ED6 /* explosion2.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD3996451FA9BEA600514ED6 /* explosion2.wav */; };
+		BD3996481FA9BEC100514ED6 /* explosion1.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD3996471FA9BEBB00514ED6 /* explosion1.wav */; };
+		BD39964C1FA9BEE500514ED6 /* rumble1.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD3996491FA9BEDE00514ED6 /* rumble1.wav */; };
+		BD39964D1FA9BEE800514ED6 /* rumble2.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD39964A1FA9BEDF00514ED6 /* rumble2.wav */; };
+		BD39964E1FA9BEEA00514ED6 /* rumble3.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD39964B1FA9BEDF00514ED6 /* rumble3.wav */; };
+		BD3996511FA9C1EA00514ED6 /* missionFailed.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD3996501FA9C0D700514ED6 /* missionFailed.wav */; };
+		BD3996521FA9C1ED00514ED6 /* missionAccomplished.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD39964F1FA9C0D700514ED6 /* missionAccomplished.wav */; };
 		BD413D331FA4569A00D880DD /* scene1.scn in Resources */ = {isa = PBXBuildFile; fileRef = BD413D321FA4569A00D880DD /* scene1.scn */; };
 		BD45E6451FA46FCA008ACCD7 /* HUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD45E6441FA46FCA008ACCD7 /* HUDManager.swift */; };
 		BD45E6471FA472F9008ACCD7 /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD45E6461FA472F9008ACCD7 /* GameLevel.swift */; };
@@ -32,6 +39,13 @@
 
 /* Begin PBXFileReference section */
 		BD392D681FA8A3DD002E535F /* PreambleNodePositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreambleNodePositions.swift; sourceTree = "<group>"; };
+		BD3996451FA9BEA600514ED6 /* explosion2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion2.wav; sourceTree = "<group>"; };
+		BD3996471FA9BEBB00514ED6 /* explosion1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion1.wav; sourceTree = "<group>"; };
+		BD3996491FA9BEDE00514ED6 /* rumble1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = rumble1.wav; sourceTree = "<group>"; };
+		BD39964A1FA9BEDF00514ED6 /* rumble2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = rumble2.wav; sourceTree = "<group>"; };
+		BD39964B1FA9BEDF00514ED6 /* rumble3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = rumble3.wav; sourceTree = "<group>"; };
+		BD39964F1FA9C0D700514ED6 /* missionAccomplished.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = missionAccomplished.wav; sourceTree = "<group>"; };
+		BD3996501FA9C0D700514ED6 /* missionFailed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = missionFailed.wav; sourceTree = "<group>"; };
 		BD413D321FA4569A00D880DD /* scene1.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = scene1.scn; sourceTree = "<group>"; };
 		BD45E6441FA46FCA008ACCD7 /* HUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDManager.swift; sourceTree = "<group>"; };
 		BD45E6461FA472F9008ACCD7 /* GameLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
@@ -68,6 +82,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD3996441FA9BE9700514ED6 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				BD39964F1FA9C0D700514ED6 /* missionAccomplished.wav */,
+				BD3996501FA9C0D700514ED6 /* missionFailed.wav */,
+				BD3996491FA9BEDE00514ED6 /* rumble1.wav */,
+				BD39964A1FA9BEDF00514ED6 /* rumble2.wav */,
+				BD39964B1FA9BEDF00514ED6 /* rumble3.wav */,
+				BD3996471FA9BEBB00514ED6 /* explosion1.wav */,
+				BD3996451FA9BEA600514ED6 /* explosion2.wav */,
+			);
+			path = sounds;
+			sourceTree = "<group>";
+		};
 		BD45E6431FA46FBB008ACCD7 /* utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +140,7 @@
 		BDA110EF1FA3272A00341B34 /* Alien Sniper Defense 3D */ = {
 			isa = PBXGroup;
 			children = (
+				BD3996441FA9BE9700514ED6 /* sounds */,
 				BD45E6431FA46FBB008ACCD7 /* utility */,
 				BD4D521A1FA440A400A9870E /* particles */,
 				BDA110F01FA3272A00341B34 /* AppDelegate.swift */,
@@ -189,15 +218,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD39964D1FA9BEE800514ED6 /* rumble2.wav in Resources */,
+				BD3996481FA9BEC100514ED6 /* explosion1.wav in Resources */,
 				BD4D51D91FA41CAB00A9870E /* letters.scn in Resources */,
+				BD3996521FA9C1ED00514ED6 /* missionAccomplished.wav in Resources */,
 				BDA110F31FA3272A00341B34 /* art.scnassets in Resources */,
+				BD39964E1FA9BEEA00514ED6 /* rumble3.wav in Resources */,
 				BD7CFAA41FA5C7B2003BC284 /* PreambleScene.scn in Resources */,
 				BD9A862F1FA71E4D00DD9910 /* OverlayNodes.scn in Resources */,
 				BDA110FD1FA3272A00341B34 /* LaunchScreen.storyboard in Resources */,
 				BD413D331FA4569A00D880DD /* scene1.scn in Resources */,
+				BD39964C1FA9BEE500514ED6 /* rumble1.wav in Resources */,
 				BDF8E0361FA87CD600393926 /* TargetWords.plist in Resources */,
 				BD4D521E1FA440C000A9870E /* spark.png in Resources */,
 				BD4D521D1FA440C000A9870E /* explosion.scnp in Resources */,
+				BD3996461FA9BEB100514ED6 /* explosion2.wav in Resources */,
+				BD3996511FA9C1EA00514ED6 /* missionFailed.wav in Resources */,
 				BDF8E0381FA8803600393926 /* TargetWordsSimple.plist in Resources */,
 				BDA110FA1FA3272A00341B34 /* Assets.xcassets in Resources */,
 				BDA110F81FA3272A00341B34 /* Main.storyboard in Resources */,
