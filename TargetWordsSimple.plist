@@ -4,6 +4,25 @@
 <dict>
 	<key>Easy</key>
 	<array>
+		<string>Ten</string>
+		<string>Car</string>
+		<string>Jab</string>
+		<string>Rat</string>
+		<string>Leg</string>
+		<string>Ham</string>
+		<string>Hit</string>
+		<string>Hot</string>
+		<string>Hut</string>
+		<string>Map</string>
+		<string>Put</string>
+		<string>Pop</string>
+		<string>Log</string>
+		<string>Run</string>
+		<string>Sum</string>
+		<string>Pan</string>
+		<string>Bat</string>
+		<string>Arm</string>
+		<string>Fox</string>
 		<string>End</string>
 		<string>Lie</string>
 		<string>Pun</string>
@@ -18,6 +37,24 @@
 	</array>
 	<key>Medium</key>
 	<array>
+		<string>Bird</string>
+		<string>Seal</string>
+		<string>Lion</string>
+		<string>Bear</string>
+		<string>Peach</string>
+		<string>Pear</string>
+		<string>Apple</string>
+		<string>Burn</string>
+		<string>Pill</string>
+		<string>Shirt</string>
+		<string>Pants</string>
+		<string>Train</string>
+		<string>Foot</string>
+		<string>Neck</string>
+		<string>Head</string>
+		<string>Back</string>
+		<string>Part</string>
+		<string>Jail</string>
 		<string>Plant</string>
 		<string>Start</string>
 		<string>Fall</string>
@@ -31,6 +68,30 @@
 	</array>
 	<key>Hard</key>
 	<array>
+		<string>Backwards</string>
+		<string>Forlorn</string>
+		<string>Tomorrow</string>
+		<string>Yesterday</string>
+		<string>Surgery</string>
+		<string>Mechanical</string>
+		<string>Mathematics</string>
+		<string>Astronomy</string>
+		<string>Statistic</string>
+		<string>Inference</string>
+		<string>Conclusion</string>
+		<string>Practical</string>
+		<string>Erroneous</string>
+		<string>Fallacy</string>
+		<string>Mendacious</string>
+		<string>Fallacious</string>
+		<string>Silicon</string>
+		<string>Surprising</string>
+		<string>Tentacle</string>
+		<string>Consciousness</string>
+		<string>Collective</string>
+		<string>Untenable</string>
+		<string>Tenacious</string>
+		<string>Intrepid</string>
 		<string>Watchful</string>
 		<string>Fanatic</string>
 		<string>Fierce</string>
