@@ -61,14 +61,20 @@ class GameViewController: UIViewController {
     var wordInProgress: String!
     var wordsArray = [String]()
     
+    /** Preamble Nodes **/
+    
     var gameStartNode: SCNNode!
     var gameDifficultyNode: SCNNode!
     var gameTitleNode: SCNNode!
     
+    var easyDifficultyNode: SCNNode!
+    var mediumDifficultyNode: SCNNode!
+    var hardDifficultyNode: SCNNode!
     
     var worldNode: SCNNode!
     var overlayNode: SCNNode!
     
+    /**  Menu Options Nodes **/
     var backToMainMenuPlane: SCNNode!
     var restartGamePlane: SCNNode!
     var nextLevelPlane: SCNNode!
@@ -81,7 +87,7 @@ class GameViewController: UIViewController {
         loadTargetWords()
         setupView()
         setupInitialScene()
-
+        startPreamble()
 
     }
     
@@ -98,22 +104,22 @@ class GameViewController: UIViewController {
     func startGame(){
         
         preambleScene.isPaused = true
-        loadGame(isRestart: false)
+        loadGame(isRestart: false, gameLevel: 1)
     }
     
-    func loadGame(isRestart: Bool = false){
+    func loadGame(isRestart: Bool = false, gameLevel: Int){
         
         let transition = SKTransition.doorsOpenVertical(withDuration: 1.00)
         
         
-        if(!isRestart){
+        if(!isRestart || (gameLevel != self.game.level)){
             self.setupGameScene()
             self.setupGameSceneBackground()
+            self.game.level = gameLevel
         }
         
         self.totalNodesSpawned = 0
         hudManager.lives = 3
-        
         canStartSpawning = false
         self.gameScene.isPaused = false
 
@@ -131,14 +137,15 @@ class GameViewController: UIViewController {
                 self.setupOverlayNodes()
             } else {
                 self.resetOverlayNodePositions()
-
-                self.tempWord = self.targetWord
-                self.wordInProgress = ""
             }
             
-           
-          
             
+            self.wordInProgress = ""
+            self.hudManager.wordInProgress = ""
+            self.tempWord = self.targetWord
+
+          
+
         })
         
     }
@@ -199,7 +206,7 @@ class GameViewController: UIViewController {
         
         self.pauseGamePlane.position = SCNVector3(cameraXPos+1, cameraYPos-2.5, cameraZPos-5)
         
-        let introPanelCloud = CloudGenerator.GetTargetWordCloud(with: self.cameraNode.position, string1: "Level 1", string2: "Target Word:", string3: self.targetWord)
+        let introPanelCloud = CloudGenerator.GetTargetWordCloud(with: self.cameraNode.position, string1: "Level \(self.game.level)", string2: "Target Word:", string3: self.targetWord)
         
         overlayNode.addChildNode(introPanelCloud)
         
@@ -237,6 +244,7 @@ class GameViewController: UIViewController {
         
     }
     
+   
     
     func positionMainMenu(isInFrontOfCamera: Bool){
         let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
@@ -259,7 +267,6 @@ class GameViewController: UIViewController {
     
     
     func startPreamble(){
-        //preambleScene.isPaused = true
         
         let transition = SKTransition.doorsOpenVertical(withDuration: 1.00)
         
@@ -270,6 +277,7 @@ class GameViewController: UIViewController {
         scnView.present(preambleScene, with: transition, incomingPointOfView: nil, completionHandler: {
             
             self.game.state = .tapToPlay
+            self.positionPreambleMainMenu(inFrontOfCamera: true)
         })
     }
     
@@ -289,18 +297,44 @@ class GameViewController: UIViewController {
         gameStartNode = preambleScene.rootNode.childNode(withName: "StartGame", recursively: true)
         gameDifficultyNode = preambleScene.rootNode.childNode(withName: "DifficultyBox", recursively: true)
         gameTitleNode = preambleScene.rootNode.childNode(withName: "LetterBox", recursively: true)
-        
-       
-        gameTitleNode.runAction(SCNAction.move(to: PreambleNodePositions.GameTitleNodeActivePos, duration: 1.00), completionHandler: {})
-        gameStartNode.runAction(SCNAction.move(to: PreambleNodePositions.GameStartNodeActivePos, duration: 1.00), completionHandler: {})
-        gameDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.GameDifficultyNodeActivePos, duration: 1.00), completionHandler: {})
-        
-        
+     
+        easyDifficultyNode = preambleScene.rootNode.childNode(withName: "EasyBox", recursively: true)
+        mediumDifficultyNode = preambleScene.rootNode.childNode(withName: "MediumBox", recursively: true)
+        hardDifficultyNode = preambleScene.rootNode.childNode(withName: "HardBox", recursively: true)
+
+    
         currentScene = preambleScene
         currentScene.isPaused = false
         game.state = .tapToPlay
     }
     
+    func positionPreambleMainMenu(inFrontOfCamera: Bool){
+        
+        if(inFrontOfCamera){
+            gameTitleNode.runAction(SCNAction.move(to: PreambleNodePositions.GameTitleNodeActivePos, duration: 1.00), completionHandler: {})
+            gameStartNode.runAction(SCNAction.move(to: PreambleNodePositions.GameStartNodeActivePos, duration: 1.00), completionHandler: {})
+            gameDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.GameDifficultyNodeActivePos, duration: 1.00), completionHandler: {})
+            
+        } else {
+            gameTitleNode.runAction(SCNAction.move(to: PreambleNodePositions.GameTitleNodeInactivePos, duration: 1.00), completionHandler: {})
+            gameStartNode.runAction(SCNAction.move(to: PreambleNodePositions.GameStartNodeInactivePos, duration: 1.00), completionHandler: {})
+            gameDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.GameDifficultyNodeInactivePos, duration: 1.00), completionHandler: {})
+        }
+    }
+    
+    func positionPreambleDifficultyMenu(isInFrontOfCamera: Bool){
+        
+        if(isInFrontOfCamera){
+            self.easyDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.EasyDifficultyNodeActivePos, duration: 1.00), completionHandler: {})
+            self.mediumDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.MediumDifficultyNodeActivePos, duration: 1.00), completionHandler: {})
+            self.hardDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.HardDifficultyNodeActivePos, duration: 1.00), completionHandler: {})
+        } else {
+            self.easyDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.EasyDifficultyNodeInactivePos, duration: 0.50), completionHandler: {})
+            self.mediumDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.MediumDifficultyNodeInactivePos, duration: 0.50), completionHandler: {})
+            self.hardDifficultyNode.runAction(SCNAction.move(to: PreambleNodePositions.HardDifficultyNodeInactivePos, duration: 0.50), completionHandler: {})
+            
+        }
+    }
     
     func setupGameScene(){
         gameScene = SCNScene()
@@ -502,9 +536,31 @@ class GameViewController: UIViewController {
                     if(node.name == "DifficultyBox"){
                         print("Touched the diffiuclt box")
                         
+                        positionPreambleMainMenu(inFrontOfCamera: false)
+                        positionPreambleDifficultyMenu(isInFrontOfCamera: true)
+                    }
                     
-                        let axisAngle = SCNVector4(x: 10.0, y: 10.0, z: 0.0, w: 90.0)
-                        node.runAction(SCNAction.rotate(toAxisAngle: axisAngle, duration: 1.00))
+                    if(node.name == "EasyBox"){
+                        positionPreambleMainMenu(inFrontOfCamera: true)
+                        positionPreambleDifficultyMenu(isInFrontOfCamera: false)
+                        game.difficultyLevel = .Easy
+                        loadTargetWords()
+                    }
+                    
+                    if(node.name == "MediumBox"){
+                        positionPreambleMainMenu(inFrontOfCamera: true)
+                        positionPreambleDifficultyMenu(isInFrontOfCamera: false)
+                        game.difficultyLevel = .Medium
+                        loadTargetWords()
+                        
+                    }
+                    
+                    if(node.name == "HardBox"){
+                        positionPreambleMainMenu(inFrontOfCamera: true)
+                        positionPreambleDifficultyMenu(isInFrontOfCamera: false)
+                        game.difficultyLevel = .Hard
+                        loadTargetWords()
+                        
                     }
                 }
                 
@@ -519,6 +575,7 @@ class GameViewController: UIViewController {
                     
                     if(node.name == CloudGenerator.MenuNodeType.nextLevelCloud.rawValue){
                         print("Loading next level")
+                        loadGame(isRestart: false, gameLevel: (self.game.level + 1))
                         positionGameWinMenu(hasWonGame: false)
 
 
@@ -529,7 +586,7 @@ class GameViewController: UIViewController {
                     
                     if(node.name == CloudGenerator.MenuNodeType.restartGameCloud.rawValue){
                         print("Restarting current game scene")
-                        loadGame(isRestart: true)
+                        loadGame(isRestart: true, gameLevel: self.game.level)
                         positionGameLossMenu(hasLostGame: false)
 
 
@@ -559,11 +616,9 @@ class GameViewController: UIViewController {
                     }
                     
                     
-                    if(node.name == CloudGenerator.MenuNodeType.nextLevelCloud.rawValue){
-                        return
-                    }
-                    
+                  
                     if(node.name == CloudGenerator.MenuNodeType.restartGameCloud.rawValue){
+                        loadGame(isRestart: true, gameLevel: self.game.level)
                         return
                     }
                     
@@ -648,19 +703,21 @@ extension GameViewController: SCNSceneRendererDelegate{
                 spawnLetterRandomSpawnPoint()
             }
             spawnTime = time + Double(randomTimeDist.nextUniform())
+         
             
-            if(self.wordInProgress == self.targetWord){
-                print("You've won the game!")
-                game.state = .missionCompleted
-                positionGameWinMenu(hasWonGame: true)
-            }
-            
-            if(self.hudManager.lives <= 0 || self.totalNodesSpawned > game.getSpawnLimit()){
-                print("You've lost the game!")
-                game.state = .gameOver
-                positionGameLossMenu(hasLostGame: true)
-
-            }
+        }
+        
+        
+        if(self.tempWord.isEmpty || self.tempWord == ""){
+            print("You've won the game!")
+            game.state = .missionCompleted
+            positionGameWinMenu(hasWonGame: true)
+        }
+        
+        if(self.hudManager.lives <= 0 || self.totalNodesSpawned > game.getSpawnLimit()){
+            print("You've lost the game!")
+            game.state = .gameOver
+            positionGameLossMenu(hasLostGame: true)
             
         }
         

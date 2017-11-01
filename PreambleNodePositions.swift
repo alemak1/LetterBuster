@@ -19,4 +19,13 @@ class PreambleNodePositions{
     static let GameDifficultyNodeInactivePos = SCNVector3(-0.2500, -0.90, -6.7)
     static let GameTitleNodeInactivePos = SCNVector3(-0.2500, 0.385, -6.7)
     
+    static let HardDifficultyNodeInactivePos = SCNVector3(-0.2500, 1.50, -8.7)
+    static let EasyDifficultyNodeInactivePos = SCNVector3(-0.2500, -0.90, -8.7)
+    static let MediumDifficultyNodeInactivePos = SCNVector3(-0.2500, 0.385, -8.7)
+    
+    
+    static let HardDifficultyNodeActivePos = SCNVector3(-0.2500, 1.50, -2.0)
+    static let EasyDifficultyNodeActivePos = SCNVector3(-0.2500, -0.90, -2.0)
+    static let MediumDifficultyNodeActivePos = SCNVector3(-0.2500, 0.385, -2.0)
+    
 }
