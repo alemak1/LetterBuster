@@ -474,7 +474,15 @@ class GameViewController: UIViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
+        if(game.state == .playing){
+            let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
+
+            let horizontalSizeClass = traitCollection.horizontalSizeClass
         
+            let pauseGamePos = horizontalSizeClass == .compact ? SCNVector3(cameraXPos+1, cameraYPos-2.5, cameraZPos-5) : SCNVector3(cameraXPos+5, cameraYPos-2.5, cameraZPos-5)
+        
+            self.pauseGamePlane.position = pauseGamePos
+        }
     }
     
     //MARK: ******* Touches Began
@@ -720,15 +728,15 @@ class GameViewController: UIViewController {
         if(hasWonGame){
             
             let audioPlayer = SCNAudioPlayer(source: self.gameWinAudioSource)
-            self.gameWinPlane.position = SCNVector3(cameraXPos, cameraYPos+2, cameraZPos-5)
+            self.gameWinPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+2, cameraZPos-5)
             self.gameWinPlane.addAudioPlayer(audioPlayer)
             
-            self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos-5)
-            self.nextLevelPlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos-5)
+            self.backToMainMenuPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+1, cameraZPos-5)
+            self.nextLevelPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos, cameraZPos-5)
         } else {
-            self.gameWinPlane.position = SCNVector3(cameraXPos, cameraYPos+2, cameraZPos+5)
-            self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos+5)
-            self.nextLevelPlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos+5)
+            self.gameWinPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+2, cameraZPos+5)
+            self.backToMainMenuPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+1, cameraZPos+5)
+            self.nextLevelPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos, cameraZPos+5)
         }
         
         
@@ -767,8 +775,8 @@ class GameViewController: UIViewController {
         let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
         
         if(hasLostGame){
-            self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos-5)
-            self.restartGamePlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos-5)
+            self.backToMainMenuPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+1, cameraZPos-5)
+            self.restartGamePlane.position = SCNVector3(cameraXPos-0.5, cameraYPos, cameraZPos-5)
             
             if(tooManyNodes){
                 
@@ -789,8 +797,8 @@ class GameViewController: UIViewController {
             }
             
         } else {
-            self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos+5)
-            self.restartGamePlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos+5)
+            self.backToMainMenuPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+1, cameraZPos+5)
+            self.restartGamePlane.position = SCNVector3(cameraXPos-0.5, cameraYPos, cameraZPos+5)
             self.gameLossPlaneTooManyNodes.position = SCNVector3(cameraXPos, cameraYPos+2, cameraZPos+5)
             self.gameLossPlaneNoMoreLives.position = SCNVector3(cameraXPos, cameraYPos+2, cameraZPos+5)
 
@@ -808,12 +816,12 @@ class GameViewController: UIViewController {
         let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
         
         if(isInFrontOfCamera){
-            self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos-5)
-            self.restartGamePlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos-5)
+            self.backToMainMenuPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+1, cameraZPos-5)
+            self.restartGamePlane.position = SCNVector3(cameraXPos-0.5, cameraYPos, cameraZPos-5)
             //self.saveGamePlane.position = SCNVector3(cameraXPos, cameraYPos-1, cameraZPos-5)
         } else {
-            self.backToMainMenuPlane.position = SCNVector3(cameraXPos, cameraYPos+1, cameraZPos+5)
-            self.restartGamePlane.position = SCNVector3(cameraXPos, cameraYPos, cameraZPos+5)
+            self.backToMainMenuPlane.position = SCNVector3(cameraXPos-0.5, cameraYPos+1, cameraZPos+5)
+            self.restartGamePlane.position = SCNVector3(cameraXPos-0.5, cameraYPos, cameraZPos+5)
            // self.saveGamePlane.position = SCNVector3(cameraXPos, cameraYPos-1, cameraZPos+5)
             
         }
@@ -883,7 +891,7 @@ extension GameViewController: SCNSceneRendererDelegate{
             positionGameWinMenu(hasWonGame: true)
         }
         
-        /**
+        
         if(self.hudManager.lives <= 0){
             print("You've lost the game: no more lives!")
             game.state = .gameOver
@@ -896,7 +904,7 @@ extension GameViewController: SCNSceneRendererDelegate{
             game.state = .gameOver
             positionGameLossMenu(hasLostGame: true, tooManyNodes: true)
         }
-        **/
+    
         
         removeExcessNodes()
         
