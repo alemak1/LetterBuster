@@ -472,18 +472,27 @@ class GameViewController: UIViewController {
    
     //MARK: ******** Handler for Orientation Changes
     
+
+    
+    /**
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
         if(game.state == .playing){
+            print("Changig the position of the pause node")
+            
             let (cameraXPos,cameraYPos,cameraZPos) = (self.cameraNode.position.x,self.cameraNode.position.y,self.cameraNode.position.z)
 
-            let horizontalSizeClass = traitCollection.horizontalSizeClass
+            let verticalSizeClass = traitCollection.verticalSizeClass
         
-            let pauseGamePos = horizontalSizeClass == .compact ? SCNVector3(cameraXPos+1, cameraYPos-2.5, cameraZPos-5) : SCNVector3(cameraXPos+5, cameraYPos-2.5, cameraZPos-5)
+            let pauseGamePos = verticalSizeClass == .regular ? SCNVector3(cameraXPos+1, cameraYPos-2.5, cameraZPos-5) : SCNVector3(cameraXPos+5, cameraYPos-2.5, cameraZPos-5)
         
+            print("The position of the pause node is now \(pauseGamePos)")
+            
             self.pauseGamePlane.position = pauseGamePos
         }
     }
+    **/
+    
     
     //MARK: ******* Touches Began
     
